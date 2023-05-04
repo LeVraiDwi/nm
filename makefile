@@ -4,8 +4,8 @@ UNAME_S = $(shell uname -s)
 
 SRC_PATH = ./src
 
-SRC_NAME =	main.c bit_read.c file.c\
-			file_struct.c\
+SRC_NAME =	ft_nm.c bit_read.c file.c\
+			map_struct.c arg.c\
 
 LIBFT = ./libft/libft.a
 

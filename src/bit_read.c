@@ -1,21 +1,17 @@
-#include "bit_read.h"
+#include "ft_nm.h"
 
-t_file    *get_file_string(char   *path) {
+int get_map_string(char   *path, t_map *map) {
     int fd;
-    t_file  *file;
 
-    file = new_file();
-    if (!file)
-        return 0;
     fd = ft_open(path);
     if (!fd) {
-        rm_file(file);
-        return 0;
+        rm_map(map);
+        return -1; //error
     }
-    if (fstat(fd, &file->buf)) {
+    if (fstat(fd, &map->buf)) {
         ft_close(fd);
-        rm_file(file);
-        return 0;
+        rm_map(map);
+        return -1; //error
     }
     // printf("File type:                ");
 			// switch (buf.st_mode & S_IFMT) {
@@ -48,14 +44,14 @@ t_file    *get_file_string(char   *path) {
    			// printf("Last status change:       %s", ctime(&buf.st_ctime));
    			// printf("Last file access:         %s", ctime(&buf.st_atime));
     		// printf("Last file modification:   %s", ctime(&buf.st_mtime));
-    file->addr = mmap(NULL, file->buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    map->addr = mmap(NULL, map->buf.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
     if (ft_close(fd)) {
-        rm_file(file);
-        return (0);
+        rm_map(map);
+        return (-1); //error
     }
-    if ((void *)file->addr == (void *)-1) {
-        rm_file(file);
-        return 0;
+    if ((void *)map->addr == (void *)-1) {
+        rm_map(map);
+        return -1; //error
     }
-    return file;
+    return 0;
 }
