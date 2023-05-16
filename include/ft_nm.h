@@ -21,7 +21,38 @@
 #   include <sys/stat.h>
 #   include <unistd.h>
 #   include <fcntl.h>
+#   include <elf.h>
 #   include "libft.h"
+
+typedef enum e_elf_class {
+    ELF_CLASS_NONE = 0,
+    ELF_CLASS_32 = 1,
+    ELF_CLASS_64 = 2,
+} t_elf_class;
+
+typedef union u_elf_header {
+    Elf32_Ehdr  *ehdr_32;
+    Elf64_Ehdr  *ehdr_64;
+}   t_elf_header;
+
+typedef union u_elf_section_header {
+    Elf32_Shdr  *shdr_32;
+    Elf64_Shdr  *shdr_64;
+}   t_elf_section_header;
+
+typedef union u_elf_symbol {
+    Elf32_Sym   *sym_32;
+    Elf64_Sym   *sym_64;
+}   t_elf_symbol;
+
+typedef struct s_elf_data {
+    t_elf_header            elf_header;
+    t_elf_section_header    elf_section_header;
+    t_elf_class             elf_class;
+    t_elf_section_header    elf_section_strtab;
+    t_elf_section_header    elf_section_symtab;
+    t_elf_section_header    elf_section_symtab_strtab;
+} t_elf_data;
 
 typedef struct s_arg {
     unsigned int    flag;
@@ -30,20 +61,22 @@ typedef struct s_arg {
 }   t_arg;
 
 typedef struct s_map {
-    struct stat	buf;
-	void 		*addr;
+    struct stat     buf;
+	unsigned char   *addr;
 } t_map;
 
 typedef struct s_nm {
-    t_arg   arg;
-    t_map   map;
+    t_arg       arg;
+    t_map       map;
+    t_elf_data  elf_data;
 }   t_nm;
-
 
 int             parsing_arg(char **argv, int argc, t_nm *nm);
 int             get_map_string(char   *path, t_map  *map);
 int             ft_open(char *path);
 int             ft_close(int fd);
+int             set_elf_header(t_elf_data *elf_data, t_map map);
+int             set_elf_section_header(t_elf_data *elf_data, const t_map map);
 
 
 unsigned int    add_file(char *tmp, t_nm *nm);
@@ -54,4 +87,7 @@ void	        init_nm(t_nm *nm);
 void	        rm_nm(t_nm *nm);
 void            init_map(t_map   *map);
 void            rm_map(t_map *map);
+void            init_elf_header(t_elf_header *elf_header);
+void            init_data (t_elf_data *elf_data);
+void            init_elf_section_header(t_elf_section_header *elf_section_header);
 #endif

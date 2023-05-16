@@ -27,7 +27,7 @@ unsigned int    add_file(char *tmp, t_nm *nm) {
 void    init_arg(t_arg *arg) {
     arg->flag = 0;
     arg->nb_file = 0;
-    ft_bzero((void *)arg->file_lst, MAX_NB_FILE);
+    ft_bzero((void *)arg->file_lst, sizeof(arg->file_lst));
 }
 
 void    rm_arg(t_arg *arg) {

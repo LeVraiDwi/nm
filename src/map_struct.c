@@ -2,6 +2,7 @@
 
 void    init_map(t_map   *map) {
     map->addr = 0;
+    map->buf = (struct stat){0};
 }
 
 void    rm_map(t_map *map) {
