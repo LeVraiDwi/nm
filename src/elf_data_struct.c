@@ -21,4 +21,5 @@ size_t  get_number_of_section(t_elf_data *elf_data) {
         return elf_data->elf_header.ehdr_32->e_phnum;
     else if (elf_data->elf_class == ELFCLASS64)
         return elf_data->elf_header.ehdr_64->e_phnum;
+    return 0;
 }

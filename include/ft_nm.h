@@ -52,6 +52,8 @@ typedef struct s_elf_data {
     t_elf_section_header    elf_section_strtab;
     t_elf_section_header    elf_section_symtab;
     t_elf_section_header    elf_section_symtab_strtab;
+    t_elf_symbol            elf_current_symbol;
+    t_elf_symbol            elf_symbol;
 } t_elf_data;
 
 typedef struct s_arg {
@@ -77,9 +79,13 @@ int             ft_open(char *path);
 int             ft_close(int fd);
 int             set_elf_header(t_elf_data *elf_data, t_map map);
 int             set_elf_section_header(t_elf_data *elf_data, const t_map map);
-
+int             find_symbole_strtab(t_elf_data *elf_data);
+int             get_sym_data(t_elf_data *elf_data, t_map map);
+int             print_file_sym(t_nm *nm);
 
 unsigned int    add_file(char *tmp, t_nm *nm);
+
+size_t  get_number_of_section(t_elf_data *elf_data);
 
 void            init_arg(t_arg *arg);
 void            rm_arg(t_arg *arg);

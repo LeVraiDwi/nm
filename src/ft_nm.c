@@ -12,8 +12,7 @@ int main(int argc, char **argv) {
 		printf("parsing arg: %s\n", nm.arg.file_lst[0]);
 		if (get_map_string(nm.arg.file_lst[i], &nm.map))
 			return -1; //error
-		if (set_elf_header(&nm.elf_data, nm.map))
-			return -1; //error
+		print_file_sym(&nm);
 		printf("class: %d\n", nm.elf_data.elf_class);
 		printf("e_shoff: %ld\n", nm.elf_data.elf_header.ehdr_64->e_shoff);
 		printf("type: %x\n", nm.elf_data.elf_header.ehdr_64->e_type);
