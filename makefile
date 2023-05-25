@@ -6,7 +6,7 @@ SRC_PATH = ./src
 
 SRC_NAME =	ft_nm.c bit_read.c file.c\
 			map_struct.c arg.c elf.c\
-			elf_data_struct.c\
+			elf_data_struct.c utils.c\
 
 LIBFT = ./libft/libft.a
 
@@ -34,9 +34,11 @@ ${NAME}:	${OBJS}
 all: ${NAME}
 
 clean:
+		cd libft; make clean;
 		${RM} ${OBJS}
 
 fclean:		clean
+			cd libft; make fclean;
 			${RM} ${NAME}
 
 re:	fclean all;

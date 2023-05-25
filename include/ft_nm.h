@@ -77,11 +77,16 @@ int             parsing_arg(char **argv, int argc, t_nm *nm);
 int             get_map_string(char   *path, t_map  *map);
 int             ft_open(char *path);
 int             ft_close(int fd);
-int             set_elf_header(t_elf_data *elf_data, t_map map);
-int             set_elf_section_header(t_elf_data *elf_data, const t_map map);
+int             set_elf_header(t_elf_data *elf_data, t_map *map);
+int             set_elf_section_header(t_elf_data *elf_data, t_map *map);
 int             find_symbole_strtab(t_elf_data *elf_data);
 int             get_sym_data(t_elf_data *elf_data, t_map map);
 int             print_file_sym(t_nm *nm);
+int             is_display(t_elf_data elf_data, char *name, int i);
+
+char            get_char(t_elf_data elf_data, int i);
+
+char            *get_sym_name(t_elf_data elf_data, t_map *map, int i);
 
 unsigned int    add_file(char *tmp, t_nm *nm);
 
