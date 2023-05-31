@@ -3,6 +3,7 @@
 int main(int argc, char **argv) {
 	t_nm		nm;
 	int			i;
+	uint64_t	l;
 	char		*name;
 
 	init_nm(&nm);
@@ -11,24 +12,32 @@ int main(int argc, char **argv) {
 	i = 0;	
 	while (i < nm.arg.nb_file) {
 		//printf("parsing arg: %s\n", nm.arg.file_lst[0]);
-		if (get_map_string(nm.arg.file_lst[i], &nm.map))
-			return -1; //error
-		print_file_sym(&nm);
-		//printf("class: %d\n", nm.elf_data.elf_class);
-		//printf("e_shoff: %ld\n", nm.elf_data.elf_header.ehdr_64->e_shoff);
-		//printf("type: %x\n", nm.elf_data.elf_header.ehdr_64->e_type);
-		//printf("version: %x\n", nm.elf_data.elf_header.ehdr_64->e_version);
-		//printf("nb section: %x\n", nm.elf_data.elf_header.ehdr_64->e_shnum);
-		//printf("section addr: %ld\n", nm.elf_data.elf_section_header.shdr_64->sh_addr);
-		//l = nm.elf_data.elf_header.ehdr_64->e_shstrndx + nm.elf_data.elf_section_header.shdr_64->sh_name;
-		//printf("section name: %s\n",  nm.map.addr + nm.elf_data.elf_header.ehdr_64->e_shstrndx + nm.elf_data.elf_section_header.shdr_64->sh_name);
-		//printf("%s\n", nm.map.addr +  nm.elf_data.elf_symbol.sym_64[10].st_name);
-		int nboftab = nm.elf_data.elf_section_symtab.shdr_64->sh_size / sizeof(Elf64_Sym);
-		//printf("nb entry: %d\n%ld\n", nboftab, nm.elf_data.elf_section_symtab.shdr_64->sh_size);
-		for (int i = 0; i < nboftab; i++) {
+		if (i > 0)
+			ft_dprintf(1, "\n");
+		if (get_map_string(nm.arg.file_lst[i], &nm.map)) {
+			i++;
+			continue;
+		}
+		if (!check_header(&nm)) {
+			rm_map(&nm.map);
+			i++;
+			continue;
+		}
+		init_data(&nm.elf_data);
+		if (print_file_sym(&nm)) {
+			rm_map(&nm.map);
+			i++;
+			continue;
+		}
+		for (size_t i = 0; i < nm.elf_data.nb_tab; i++) {
 			name = get_sym_name(nm.elf_data, &nm.map, i);
-			if (is_display(nm.elf_data, name, i))
-				printf("%s | %d\n", name, get_char(nm.elf_data, i));
+			l = get_value(nm.elf_data, i);
+			if (is_display(nm.elf_data, name, i)) {
+				if (l)
+					ft_dprintf(1, "%.16x %c %s\n", l, get_char(nm.elf_data, name, i), name);
+				else
+					ft_dprintf(1, "%16s %c %s\n", "\0", get_char(nm.elf_data, name, i), name);
+			}
 		}
 		rm_map(&nm.map);
 		i++;

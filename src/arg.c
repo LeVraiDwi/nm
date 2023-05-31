@@ -7,18 +7,23 @@ int parsing_arg(char **argv, int argc, t_nm *nm) {
     i = 1;
     while (i < argc) {
         tmp = argv[i++];
-        if (add_file(tmp, nm))
+        if (add_file(tmp, nm)) {
+            ft_dprintf(2, "error: to many file\n");
             return -1; //error msg to many file
+        }     
     }
     if (nm->arg.nb_file == 0)
-        if (add_file("a.out", nm))
+        if (add_file("a.out", nm)) {
+            ft_dprintf(2, "error: to many file\n");
             return -1; //error msg to many file
+        }
     return 0;
 }
 
 unsigned int    add_file(char *tmp, t_nm *nm) {
     if (nm->arg.nb_file < MAX_NB_FILE) {
         nm->arg.file_lst[nm->arg.nb_file++] = tmp;
+        nm->arg.curr_filename = tmp;
         return 0;
     }
     return -1;

@@ -3,10 +3,15 @@
 void salut(int c) {
 	int nb = c;
 
-	printf("%d", nb);
+	printf("%d\n", nb);
+}
+
+void indirect(void (*fn)(int c)) {
+	fn(2);
 }
 
 int main() {
-	salut(2);
+	indirect(&salut);
+	salut(4);
 	return 1;
 }
