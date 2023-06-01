@@ -21,7 +21,7 @@ FLAGS = -Wall -Wextra -Werror
 
 HEADER = -I "./include" -I "./libft" -I "./ft_printf"
 
-CC = gcc
+CC = clang
 
 RM = rm -f
 

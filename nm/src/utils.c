@@ -43,7 +43,7 @@ char get_char(t_elf_data elf_data, char *name, int i) {
     
     if (elf32 || elf64) {
         if (elf_data.elf_class == ELFCLASS32) {
-            if (elf32->sh_type == SHT_NOBITS && elf32->sh_flags & SHF_ALLOC && elf32->sh_flags && SHF_WRITE)
+            if (elf32->sh_type == SHT_NOBITS && elf32->sh_flags & SHF_ALLOC && elf32->sh_flags & SHF_WRITE)
                 c = 'B';
             else if (elf32->sh_type == SHT_PROGBITS) {
                 if (elf32->sh_flags & SHF_WRITE)
@@ -70,7 +70,7 @@ char get_char(t_elf_data elf_data, char *name, int i) {
             }
         }
         else if (elf_data.elf_class == ELFCLASS64) {
-            if (elf64->sh_type == SHT_NOBITS && elf64->sh_flags & SHF_ALLOC && elf64->sh_flags && SHF_WRITE)
+            if (elf64->sh_type == SHT_NOBITS && (elf64->sh_flags & SHF_ALLOC) && (elf64->sh_flags & SHF_WRITE))
                 c = 'B';
             else if (elf64->sh_type == SHT_PROGBITS) {
                 if (elf64->sh_flags & SHF_WRITE)
