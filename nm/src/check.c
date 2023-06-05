@@ -65,6 +65,73 @@ bool    check_symtab_strtab(t_nm *nm) {
     return true;
 }
 
+bool    check_symbol_name(t_nm *nm) {
+    Elf32_Shdr shdr32;
+    Elf64_Shdr shdr64;
+
+    for (size_t i = 0; i < nm->elf_data.nb_tab; i++) {
+        if (nm->elf_data.elf_class == ELFCLASS32) {
+            if (ELF32_ST_TYPE(nm->elf_data.elf_symbol.sym_32[i].st_info) == STT_SECTION) {
+                shdr32 = nm->elf_data.elf_section_header.shdr_32[nm->elf_data.elf_symbol.sym_32[i].st_shndx];
+                printf("errrrrr: %u | %u\n", shdr32.sh_size, nm->elf_data.elf_symbol.sym_32[i].st_name);
+                if (shdr32.sh_size < nm->elf_data.elf_symbol.sym_32[i].st_name && nm->elf_data.elf_symbol.sym_32[i].st_name) {
+                    ft_dprintf(2, "%s: %s: e_stname is corruped or invalid\n", PROG_NAME, nm->arg.curr_filename);
+                    return false;
+                }
+            }
+            printf("err: %lu | %u\n", nm->elf_data.elf_section_symtab_strtab.shdr_64->sh_size, nm->elf_data.elf_symbol.sym_64[i].st_name);
+            if (nm->elf_data.elf_section_symtab_strtab.shdr_64->sh_size < nm->elf_data.elf_symbol.sym_64[i].st_name && nm->elf_data.elf_symbol.sym_64[i].st_name) {
+                ft_dprintf(2, "%s: %s: e_shtame is corruped or invalid\n", PROG_NAME, nm->arg.curr_filename);
+                return false;
+            }
+        } else if (nm->elf_data.elf_class == ELFCLASS64) {
+            if (ELF64_ST_TYPE(nm->elf_data.elf_symbol.sym_64[i].st_info) == STT_SECTION) {
+                shdr64 = nm->elf_data.elf_section_header.shdr_64[nm->elf_data.elf_symbol.sym_64[i].st_shndx];
+                printf("errrrrr: %lu | %u\n", shdr64.sh_size, nm->elf_data.elf_symbol.sym_64[i].st_name);
+                if (shdr64.sh_size < nm->elf_data.elf_symbol.sym_64[i].st_name && nm->elf_data.elf_symbol.sym_64[i].st_name) {
+                    ft_dprintf(2, "%s: %s: e_stname is corruped or invalid\n", PROG_NAME, nm->arg.curr_filename);
+                    return false;
+                }
+            }
+            printf("err: %lu | %u\n", nm->elf_data.elf_section_symtab_strtab.shdr_64->sh_size, nm->elf_data.elf_symbol.sym_64[i].st_name);
+            if (nm->elf_data.elf_section_symtab_strtab.shdr_64->sh_size < nm->elf_data.elf_symbol.sym_64[i].st_name && nm->elf_data.elf_symbol.sym_64[i].st_name) {
+                ft_dprintf(2, "%s: %s: e_shtame is corruped or invalid\n", PROG_NAME, nm->arg.curr_filename);
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool    check_sh_name(t_nm *nm) {
+   size_t       e_shnum;
+    size_t      e_shentsize;
+    size_t      max_shnum;
+    //Elf32_Shdr  shdr32;
+    Elf64_Shdr  shdr64;
+
+    e_shnum = get_number_of_section(&nm->elf_data);
+    
+    e_shentsize = nm->elf_data.elf_class == ELFCLASS32 ? sizeof(Elf32_Shdr) : sizeof(Elf64_Shdr);
+    max_shnum = nm->map.buf.st_size / e_shentsize;
+    if (e_shnum > max_shnum) {
+        ft_dprintf(2, "%s: %s: e_shnum is corruped or invalid\n", PROG_NAME, nm->arg.curr_filename);
+        return false;
+    }
+    for (size_t i = 0; i < e_shnum; i++) {
+        if (nm->elf_data.elf_class == ELFCLASS64) {
+            shdr64 = nm->elf_data.elf_section_header.shdr_64[nm->elf_data.elf_header.ehdr_64->e_shstrndx];
+            if (nm->elf_data.elf_section_header.shdr_64[i].sh_name) {
+                if (nm->elf_data.elf_section_header.shdr_64[i].sh_name > shdr64.sh_size) {
+                    ft_dprintf(2, "%s: %s: sh_name is corruped or invalid\n", PROG_NAME, nm->arg.curr_filename);
+                    return false;
+                }
+            }
+        }
+    }
+    return true;
+}
+
 bool check_header(t_nm *nm) {
     if (!check_magic_number(nm))
         return false;

@@ -143,13 +143,13 @@ char    *get_sym_name(t_elf_data elf_data, t_map *map, int i) {
     if (elf_data.elf_class == ELFCLASS32) {
         if (ELF32_ST_TYPE(elf_data.elf_symbol.sym_32[i].st_info) == STT_SECTION) {
             shdr32 = elf_data.elf_section_header.shdr_32[elf_data.elf_symbol.sym_32[i].st_shndx];
-            return ((char *)(map->addr + elf_data.elf_section_strtab.shdr_32->sh_offset + shdr32.sh_name));
+            return ((char *)(map->addr + elf_data.elf_symbol.sym_32[i].st_name + shdr32.sh_offset));
         }
         return ((char *)(map->addr + elf_data.elf_section_symtab_strtab.shdr_32->sh_offset + elf_data.elf_symbol.sym_32[i].st_name));
     } else if (elf_data.elf_class == ELFCLASS64) {
         if (ELF64_ST_TYPE(elf_data.elf_symbol.sym_64[i].st_info) == STT_SECTION) {
             shdr64 = elf_data.elf_section_header.shdr_64[elf_data.elf_symbol.sym_64[i].st_shndx];
-            return ((char *)(map->addr + elf_data.elf_section_strtab.shdr_64->sh_offset + shdr64.sh_name));
+            return ((char *)(map->addr + elf_data.elf_symbol.sym_64[i].st_name + shdr64.sh_offset));
         }
         return ((char *)(map->addr + elf_data.elf_section_symtab_strtab.shdr_64->sh_offset + elf_data.elf_symbol.sym_64[i].st_name));
     }

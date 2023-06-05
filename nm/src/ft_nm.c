@@ -29,6 +29,7 @@ int main(int argc, char **argv) {
 			i++;
 			continue;
 		}
+		printf("shoff: %lx\n", nm.elf_data.elf_header.ehdr_64->e_shoff);
 		for (size_t i = 0; i < nm.elf_data.nb_tab; i++) {
 			name = get_sym_name(nm.elf_data, &nm.map, i);
 			l = get_value(nm.elf_data, i);

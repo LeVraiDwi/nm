@@ -108,8 +108,8 @@ void            init_elf_header(t_elf_header *elf_header);
 void            init_elf_symbole(t_elf_symbol *elf_sym);
 void            init_data (t_elf_data *elf_data);
 void            init_elf_section_header(t_elf_section_header *elf_section_header);
-void            bubble_sort(t_elf_data elf_data, t_map *map);
 
+bool            bubble_sort(t_elf_data elf_data, t_map *map);
 bool            check_magic_number(t_nm *nm);
 bool            check_ei_data(t_nm *nm);
 bool            check_class(t_nm *nm);
@@ -117,4 +117,6 @@ bool            check_os_abi(t_nm *nm);
 bool            check_version(t_nm *nm);
 bool            check_header(t_nm *nm);
 bool            check_symtab_strtab(t_nm *nm);
+bool            check_sh_name(t_nm *nm);
+bool            check_symbol(t_nm *nm);
 #endif

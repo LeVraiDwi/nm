@@ -30,20 +30,20 @@ int set_elf_section_header(t_elf_data *elf_data, t_map *map) {
 }
 
 int find_symbole_strtab(t_nm *nm, t_elf_data *elf_data) {
-    size_t      e_phnum;
+    size_t      e_shnum;
     uint32_t    sh_type;
     size_t      e_shentsize;
     size_t      max_shnum;
 
-    e_phnum = get_number_of_section(elf_data);
+    e_shnum = get_number_of_section(elf_data);
     
     e_shentsize = nm->elf_data.elf_class == ELFCLASS32 ? sizeof(Elf32_Shdr) : sizeof(Elf64_Shdr);
     max_shnum = nm->map.buf.st_size / e_shentsize;
-    if (e_phnum > max_shnum) {
+    if (e_shnum > max_shnum) {
         ft_dprintf(2, "%s: %s: e_shnum is corruped or invalid\n", PROG_NAME, nm->arg.curr_filename);
         return -1;
     }
-    for (size_t i = 0; i < e_phnum; i++) {
+    for (size_t i = 0; i < e_shnum; i++) {
         if (elf_data->elf_class == ELFCLASS32)
             sh_type = elf_data->elf_section_header.shdr_32[i].sh_type;
         else if (elf_data->elf_class == ELFCLASS64)
@@ -95,8 +95,13 @@ int print_file_sym(t_nm *nm) {
     if (!check_symtab_strtab(nm))
         return -1;
     nm->elf_data.nb_tab = get_nb_tab(nm);
+    if (!check_sh_name(nm))
+        return -1;
     if (get_sym_data(&nm->elf_data, nm->map))
         return -1; //err
-    bubble_sort(nm->elf_data, &nm->map);
+    if (!check_sh_name(nm))
+        return -1;
+    if (!bubble_sort(nm->elf_data, &nm->map))
+        return -1;
     return 0;
 }
