@@ -34,7 +34,7 @@ char get_char(t_elf_data elf_data, char *name, int i) {
         else
             return 'U';
     } else if (addr == SHN_ABS) {
-        return 'A';
+        return bind == STB_LOCAL ? 'a':'A';
     } else if (addr == SHN_COMMON) {
         return 'C';
     } else if (ft_strncmp(name, ".debug", 6) == 0) {
@@ -107,33 +107,6 @@ char get_char(t_elf_data elf_data, char *name, int i) {
         if (bind == STB_LOCAL)
             c = ft_tolower(c);
         return c;
-}
-
-int     is_display(t_elf_data elf_data, char *name, int i) {
-    unsigned char   type;
-    unsigned char   bind;
-    uint16_t        addr;
-
-
-    //display all global and weak symbols, and local symbols
-    //except STT_NOTYPE, UNDEF and STT_SECTION
-
-    if (elf_data.elf_class == ELFCLASS32) {
-        type = ELF32_ST_TYPE(elf_data.elf_symbol.sym_32[i].st_info);
-        bind = ELF32_ST_BIND(elf_data.elf_symbol.sym_32[i].st_info);
-        addr = elf_data.elf_symbol.sym_32[i].st_shndx;
-    } else if (elf_data.elf_class == ELFCLASS64) {
-        type = ELF64_ST_TYPE(elf_data.elf_symbol.sym_64[i].st_info);
-        bind = ELF64_ST_BIND(elf_data.elf_symbol.sym_64[i].st_info);
-        addr = elf_data.elf_symbol.sym_64[i].st_shndx;
-    }
-    if ((ft_strncmp(name, "$", 1) == 0) || (name[0] == '\0' && addr == SHN_UNDEF))
-        return 0;
-    if ((type != STT_SECTION) &&
-        (bind == STB_GLOBAL || bind == STB_WEAK ||
-        (bind == STB_LOCAL && addr != SHN_UNDEF && type != STT_FILE)))
-        return 1;
-    return 0;
 }
 
 char    *get_sym_name(t_elf_data elf_data, t_map *map, int i) {

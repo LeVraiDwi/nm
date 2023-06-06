@@ -7,7 +7,7 @@ SRC_PATH = ./src
 SRC_NAME =	ft_nm.c bit_read.c file.c\
 			map_struct.c arg.c elf.c\
 			elf_data_struct.c utils.c\
-			sort_symbole.c check.c\
+			sort_symbole.c check.c display.c\
 
 LIBFT = ./lib/libft/libft.a
 
@@ -15,7 +15,7 @@ PRINTF = ./lib/ft_printf/libftprintf.a
 
 OBJS = $(SRCS:.c=.o)
 
-NAME = nm
+NAME = ft_nm
 
 FLAGS = -Wall -Wextra -Werror
 

@@ -3,8 +3,7 @@
 int main(int argc, char **argv) {
 	t_nm		nm;
 	int			i;
-	uint64_t	l;
-	char		*name;
+	
 
 	init_nm(&nm);
 	if (parsing_arg(argv, argc, &nm))
@@ -29,17 +28,7 @@ int main(int argc, char **argv) {
 			i++;
 			continue;
 		}
-		printf("shoff: %lx\n", nm.elf_data.elf_header.ehdr_64->e_shoff);
-		for (size_t i = 0; i < nm.elf_data.nb_tab; i++) {
-			name = get_sym_name(nm.elf_data, &nm.map, i);
-			l = get_value(nm.elf_data, i);
-			if (is_display(nm.elf_data, name, i)) {
-				if (l)
-					ft_dprintf(1, "%.16x %c %s\n", l, get_char(nm.elf_data, name, i), name);
-				else
-					ft_dprintf(1, "%16s %c %s\n", "\0", get_char(nm.elf_data, name, i), name);
-			}
-		}
+		display_sym(nm);
 		rm_map(&nm.map);
 		i++;
 	}

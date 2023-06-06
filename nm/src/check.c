@@ -113,6 +113,10 @@ bool    check_sh_name(t_nm *nm) {
     e_shnum = get_number_of_section(&nm->elf_data);
     
     e_shentsize = nm->elf_data.elf_class == ELFCLASS32 ? sizeof(Elf32_Shdr) : sizeof(Elf64_Shdr);
+    if (e_shentsize != (nm->elf_data.elf_class == ELFCLASS32 ? nm->elf_data.elf_header.ehdr_32->e_shentsize : nm->elf_data.elf_header.ehdr_64->e_shentsize)) {
+        ft_dprintf(2, "%s: %s: e_shentsize is corruped or invalid\n", PROG_NAME, nm->arg.curr_filename);
+        return false;
+    }
     max_shnum = nm->map.buf.st_size / e_shentsize;
     if (e_shnum > max_shnum) {
         ft_dprintf(2, "%s: %s: e_shnum is corruped or invalid\n", PROG_NAME, nm->arg.curr_filename);
@@ -139,8 +143,8 @@ bool check_header(t_nm *nm) {
         return false;
     else if (!check_class(nm))
         return false;
-    else if (!check_os_abi(nm))
-        return false;
+    // else if (!check_os_abi(nm))
+    //     return false;
     else if (!check_version(nm))
         return false;
     else
