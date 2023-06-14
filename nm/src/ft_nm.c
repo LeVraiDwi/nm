@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
 		//printf("parsing arg: %s\n", nm.arg.file_lst[0]);
 		if (i > 0)
 			ft_dprintf(1, "\n");
-		if (get_map_string(nm.arg.file_lst[i], &nm.map)) {
+		if (get_map_string(nm.arg.file_lst[i], &nm.map, &nm)) {
 			i++;
 			continue;
 		}

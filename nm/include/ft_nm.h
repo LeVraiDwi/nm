@@ -77,7 +77,7 @@ typedef struct s_nm {
 }   t_nm;
 
 int             parsing_arg(char **argv, int argc, t_nm *nm);
-int             get_map_string(char   *path, t_map  *map);
+int             get_map_string(char   *path, t_map  *map, t_nm *nm);
 int             ft_open(char *path);
 int             ft_close(int fd);
 int             set_elf_header(t_nm *nm);

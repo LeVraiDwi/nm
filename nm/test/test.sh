@@ -94,6 +94,76 @@ test_obj() {
     check_leaks "$sub_test_name" $test_number
 
     test_number=$((test_number + 1))
+    sub_test_name="arg"
+    prog=./obj/arg.o
+    ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
+    compare_nm_and_ft_nm_output "$sub_test_name" $test_number "$prog" "$ft_nm_output"
+    check_leaks "$sub_test_name" $test_number
+
+    test_number=$((test_number + 1))
+    sub_test_name="bit_read"
+    prog=./obj/bit_read.o
+    ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
+    compare_nm_and_ft_nm_output "$sub_test_name" $test_number "$prog" "$ft_nm_output"
+    check_leaks "$sub_test_name" $test_number
+
+    test_number=$((test_number + 1))
+    sub_test_name="check"
+    prog=./obj/check.o
+    ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
+    compare_nm_and_ft_nm_output "$sub_test_name" $test_number "$prog" "$ft_nm_output"
+    check_leaks "$sub_test_name" $test_number
+
+    test_number=$((test_number + 1))
+    sub_test_name="display"
+    prog=./obj/display.o
+    ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
+    compare_nm_and_ft_nm_output "$sub_test_name" $test_number "$prog" "$ft_nm_output"
+    check_leaks "$sub_test_name" $test_number
+
+    test_number=$((test_number + 1))
+    sub_test_name="elf_data_struct"
+    prog=./obj/elf_data_struct.o
+    ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
+    compare_nm_and_ft_nm_output "$sub_test_name" $test_number "$prog" "$ft_nm_output"
+    check_leaks "$sub_test_name" $test_number
+
+    test_number=$((test_number + 1))
+    sub_test_name="elf"
+    prog=./obj/elf.o
+    ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
+    compare_nm_and_ft_nm_output "$sub_test_name" $test_number "$prog" "$ft_nm_output"
+    check_leaks "$sub_test_name" $test_number
+
+    test_number=$((test_number + 1))
+    sub_test_name="elf_data_struct"
+    prog=./obj/elf_data_struct.o
+    ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
+    compare_nm_and_ft_nm_output "$sub_test_name" $test_number "$prog" "$ft_nm_output"
+    check_leaks "$sub_test_name" $test_number
+
+    test_number=$((test_number + 1))
+    sub_test_name="file"
+    prog=./obj/file.o
+    ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
+    compare_nm_and_ft_nm_output "$sub_test_name" $test_number "$prog" "$ft_nm_output"
+    check_leaks "$sub_test_name" $test_number
+
+    test_number=$((test_number + 1))
+    sub_test_name="ft_nm"
+    prog=./obj/ft_nm.o
+    ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
+    compare_nm_and_ft_nm_output "$sub_test_name" $test_number "$prog" "$ft_nm_output"
+    check_leaks "$sub_test_name" $test_number
+
+    test_number=$((test_number + 1))
+    sub_test_name="map_struct"
+    prog=./obj/map_struct.o
+    ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
+    compare_nm_and_ft_nm_output "$sub_test_name" $test_number "$prog" "$ft_nm_output"
+    check_leaks "$sub_test_name" $test_number
+
+    test_number=$((test_number + 1))
     sub_test_name="obj1_x32"
     prog=./obj/obj1_x32.o
     ft_nm_output=$(valgrind ../ft_nm $prog 2>./valgrind.out) 
