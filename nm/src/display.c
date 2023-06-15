@@ -2,7 +2,7 @@
 
 bool    display_value(uint64_t value, char sym) {
     
-    if (sym == 'b' || sym == 'T' || sym == 'B')
+    if (sym == 'b' || sym == 'T' || sym == 'B' || sym == 'r')
         return true;
     else if (value == 0)
         return false;
