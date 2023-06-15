@@ -1,15 +1,13 @@
 #include "ft_nm.h"
 
 bool    display_value(uint64_t value, char sym) {
-    
-    if (sym == 'b' || sym == 'T' || sym == 'B' || sym == 'r')
-        return true;
-    else if (value == 0)
+
+    if (!value && (sym == 'w' || sym == 'U' || sym == 'v'))
         return false;
     return true;
 }
 
-int     is_display(t_elf_data elf_data, char *name, int i) {
+int     is_display(t_nm *nm, t_elf_data elf_data, char *name, int i) {
     unsigned char   type;
     unsigned char   bind;
     uint16_t        addr;
@@ -30,6 +28,12 @@ int     is_display(t_elf_data elf_data, char *name, int i) {
     // if ((ft_strncmp(name, "$", 1) == 0) || (name[0] == '\0' && addr == SHN_UNDEF))
     if ((name[0] == '\0' && addr == SHN_UNDEF))
         return 0;
+    if ((nm->arg.flag & FLAG_G) && !(bind == STB_GLOBAL || bind == STB_WEAK))
+        return 0;
+    if ((nm->arg.flag & FLAG_U) && !(addr == SHN_UNDEF))
+        return 0;
+    if (nm->arg.flag & FLAG_A)
+        return 1;
     if ((type != STT_SECTION) &&
         (bind == STB_GLOBAL || bind == STB_WEAK ||
         (bind == STB_LOCAL && addr != SHN_UNDEF && type != STT_FILE)))
@@ -48,7 +52,7 @@ void display_sym(t_nm nm) {
 			name = get_sym_name(nm.elf_data, &nm.map, i);
 			value = get_value(nm.elf_data, i);
             sym = get_char(nm.elf_data, name, i);
-			if (is_display(nm.elf_data, name, i)) {
+			if (is_display(&nm, nm.elf_data, name, i)) {
 				if (nm.elf_data.elf_class == ELFCLASS64) {
 					if (display_value(value, sym))
 						ft_dprintf(1, "%.16x %c %s\n", value, sym, name);

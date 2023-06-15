@@ -15,7 +15,19 @@ void    swap_symbole(t_elf_data elf_data, int sym_index, int sym_index_) {
     }
 }
 
-bool    bubble_sort(t_elf_data elf_data, t_map *map) {
+bool    ft_comp(char *name, char *name_) {
+    if (ft_strcmp(name, name_) > 0)
+        return true;
+    return false;
+}
+
+bool    ft_reverse_comp(char *name, char *name_) {
+    if (ft_strcmp(name, name_) < 0)
+        return true;
+    return false;
+}
+
+bool    bubble_sort(t_elf_data elf_data, t_map *map, bool (*ft_comp)(char* str, char *str_)) {
     bool swapped;
     char *str1;
     char *str2;
@@ -27,7 +39,7 @@ bool    bubble_sort(t_elf_data elf_data, t_map *map) {
             str2 = get_sym_name(elf_data, map, j + 1);
             if (!str1 || !str2)
                 return false;
-            if (ft_strcmp(get_sym_name(elf_data, map, j), get_sym_name(elf_data, map, j + 1)) > 0) {
+            if (ft_comp(get_sym_name(elf_data, map, j), get_sym_name(elf_data, map, j + 1)) > 0) {
                 swap_symbole(elf_data, j, j + 1);
                 swapped = true;
             }

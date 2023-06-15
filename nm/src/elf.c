@@ -57,9 +57,9 @@ int find_symbole_strtab(t_nm *nm, t_elf_data *elf_data) {
                 elf_data->elf_section_symtab_strtab.shdr_64 = &elf_data->elf_section_header.shdr_64[elf_data->elf_section_header.shdr_64[i].sh_link];
             }
         } else if (sh_type == SHT_STRTAB) {
-            if (elf_data->elf_class == ELFCLASS32) {
+            if (elf_data->elf_class == ELFCLASS32 && i == nm->elf_data.elf_header.ehdr_32->e_shstrndx) {
                 elf_data->elf_section_strtab.shdr_32 = &elf_data->elf_section_header.shdr_32[i];
-            } else if (elf_data->elf_class == ELFCLASS64) {
+            } else if (elf_data->elf_class == ELFCLASS64 && i == nm->elf_data.elf_header.ehdr_64->e_shstrndx) {
                 elf_data->elf_section_strtab.shdr_64 = &elf_data->elf_section_header.shdr_64[i];
             }
         }
@@ -101,7 +101,14 @@ int print_file_sym(t_nm *nm) {
         return -1; //err
     if (!check_sh_name(nm))
         return -1;
-    if (!bubble_sort(nm->elf_data, &nm->map))
-        return -1;
+    if (!(nm->arg.sort_flag & FLAG_P)) {
+        if (nm->arg.sort_flag & FLAG_R) {
+            if (!bubble_sort(nm->elf_data, &nm->map, ft_reverse_comp))
+                return -1;
+        }
+        else
+            if (!bubble_sort(nm->elf_data, &nm->map, ft_comp))
+                return -1;
+    }
     return 0;
 }

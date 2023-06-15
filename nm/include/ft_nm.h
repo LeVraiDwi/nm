@@ -6,12 +6,10 @@
 #   define FLAG_NULL 0
 #   define FLAG_A 2
 #   define FLAG_G 4
-#   define FLAG_P 8
-#   define FLAG_R 16
-#   define FLAG_D 32
-#   define FLAG_H 64
-#   define FLAG_0 128
-#   define TOKEN "AoaDghpru"
+#   define FLAG_U 8
+#   define FLAG_R 2
+#   define FLAG_P 4
+#   define TOKEN "agurp"
 #   define NB_TOKEN 9
 #   define  STRING_ARG ["print-file-name","debug-syms", "dynamic", "extern-only", "help", "no-sort", "undefined-only"]
 
@@ -59,6 +57,7 @@ typedef struct s_elf_data {
 } t_elf_data;
 
 typedef struct s_arg {
+    unsigned int    sort_flag;
     unsigned int    flag;
     int             nb_file;
     char            *curr_filename;
@@ -85,7 +84,7 @@ int             set_elf_section_header(t_elf_data *elf_data, t_map *map);
 int             find_symbole_strtab(t_nm *nm, t_elf_data *elf_data);
 int             get_sym_data(t_elf_data *elf_data, t_map map);
 int             print_file_sym(t_nm *nm);
-int             is_display(t_elf_data elf_data, char *name, int i);
+int             is_display(t_nm *nm, t_elf_data elf_data, char *name, int i);
 int             get_nb_tab(t_nm *nm);
 
 uint64_t        get_value(t_elf_data elf_data, int i);
@@ -110,7 +109,7 @@ void            init_data (t_elf_data *elf_data);
 void            init_elf_section_header(t_elf_section_header *elf_section_header);
 void            display_sym(t_nm nm);
 
-bool            bubble_sort(t_elf_data elf_data, t_map *map);
+bool            bubble_sort(t_elf_data elf_data, t_map *map, bool (*ft_comp)(char* str, char *str_));
 bool            check_magic_number(t_nm *nm);
 bool            check_ei_data(t_nm *nm);
 bool            check_class(t_nm *nm);
@@ -121,4 +120,7 @@ bool            check_symtab_strtab(t_nm *nm);
 bool            check_sh_name(t_nm *nm);
 bool            check_symbol(t_nm *nm);
 bool            display_value(uint64_t value, char sym);
+bool            parse_flag(char *tmp, t_nm *nm);
+bool            ft_reverse_comp(char *name, char *name_);
+bool            ft_comp(char *name, char *name_);
 #endif
